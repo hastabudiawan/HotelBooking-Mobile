@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/home/api_check_page.dart';
 import '../../features/splash/splash_page.dart';
 import '../widgets/app_shell.dart';
 import '../widgets/placeholder_page.dart';
@@ -18,8 +19,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/home',
-                builder: (context, state) =>
-                    const PlaceholderPage(title: 'Home'),
+                builder: (context, state) => const ApiCheckPage(),
               ),
             ],
           ),
