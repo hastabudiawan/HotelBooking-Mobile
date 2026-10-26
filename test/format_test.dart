@@ -15,4 +15,16 @@ void main() {
     final text = formatRupiah(1300000).replaceAll(' ', ' ');
     expect(text, 'Rp 1.300.000');
   });
+
+  test('formatDateTimeWib menampilkan waktu UTC dalam WIB', () {
+    expect(
+      formatDateTimeWib(DateTime.utc(2026, 11, 10, 8, 30)),
+      '10 Nov 2026, 15:30 WIB',
+    );
+    // Melewati tengah malam: 18.00 UTC sudah hari berikutnya di WIB.
+    expect(
+      formatDateTimeWib(DateTime.utc(2026, 11, 10, 18, 0)),
+      '11 Nov 2026, 01:00 WIB',
+    );
+  });
 }
