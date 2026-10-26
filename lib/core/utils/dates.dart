@@ -29,3 +29,25 @@ DateTime parseUtc(String value) {
     parsed.millisecond,
   );
 }
+
+// Hotel berada di WIB (UTC+7). Offset tetap, seperti di backend.
+const hotelUtcOffset = Duration(hours: 7);
+
+// "Hari ini" menurut jam hotel, sebagai tanggal tanpa jam.
+// Parameter now hanya untuk tes.
+DateTime hotelToday({DateTime? now}) {
+  final hotelNow = (now ?? DateTime.now()).toUtc().add(hotelUtcOffset);
+  return DateTime(hotelNow.year, hotelNow.month, hotelNow.day);
+}
+
+// Menambah hari pada tanggal. Aman melewati pergantian bulan dan tahun.
+DateTime addDays(DateTime date, int days) =>
+    DateTime(date.year, date.month, date.day + days);
+
+// Jumlah malam antara dua tanggal. Dihitung lewat UTC supaya tidak terpengaruh
+// pergantian jam musim panas di zona waktu perangkat.
+int nightsBetween(DateTime checkIn, DateTime checkOut) {
+  final start = DateTime.utc(checkIn.year, checkIn.month, checkIn.day);
+  final end = DateTime.utc(checkOut.year, checkOut.month, checkOut.day);
+  return end.difference(start).inDays;
+}
