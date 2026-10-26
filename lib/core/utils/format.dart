@@ -19,3 +19,10 @@ final _shortDate = DateFormat('d MMM yyyy');
 
 // DateTime(2026, 11, 10) -> "10 Nov 2026"
 String formatDateShort(DateTime date) => _shortDate.format(date);
+
+// Waktu UTC dari backend ditampilkan dalam WIB (UTC+7), sesuai jam hotel.
+// DateTime.utc(2026, 11, 10, 8, 30) -> "10 Nov 2026, 15:30 WIB"
+String formatDateTimeWib(DateTime utc) {
+  final wib = utc.toUtc().add(const Duration(hours: 7));
+  return '${DateFormat('d MMM yyyy, HH:mm').format(wib)} WIB';
+}
