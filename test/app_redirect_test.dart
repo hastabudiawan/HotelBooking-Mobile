@@ -45,6 +45,17 @@ void main() {
     test('sudah login membuka tab yang butuh login tidak dialihkan', () {
       expect(authRedirect(loggedIn: true, uri: Uri.parse('/bookings')), isNull);
     });
+
+    test('halaman booking sebuah kamar butuh login', () {
+      expect(
+        authRedirect(loggedIn: false, uri: Uri.parse('/book/deluxe')),
+        '/login?next=%2Fbook%2Fdeluxe',
+      );
+      expect(
+        authRedirect(loggedIn: true, uri: Uri.parse('/book/deluxe')),
+        isNull,
+      );
+    });
   });
 
   group('safeNext', () {
