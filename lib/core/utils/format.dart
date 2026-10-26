@@ -14,3 +14,8 @@ String plural(int count, String singular, [String? pluralForm]) {
   final word = count == 1 ? singular : (pluralForm ?? '${singular}s');
   return '$count $word';
 }
+
+final _shortDate = DateFormat('d MMM yyyy');
+
+// DateTime(2026, 11, 10) -> "10 Nov 2026"
+String formatDateShort(DateTime date) => _shortDate.format(date);
