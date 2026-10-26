@@ -45,6 +45,9 @@ class UserProfile {
   final String email;
   final List<String> roles;
 
+  // Hanya tamu yang boleh memesan. Staf memakai panel di web.
+  bool get isGuest => roles.contains('Guest');
+
   // Huruf awal untuk avatar. Backend tidak menyimpan foto profil.
   String get initials {
     final words = fullName
