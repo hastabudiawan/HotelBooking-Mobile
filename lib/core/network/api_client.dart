@@ -8,21 +8,28 @@ import 'api_exception.dart';
 typedef JsonParser<T> = T Function(Object? json);
 
 class ApiClient {
-  ApiClient({required String baseUrl, required TokenStorage tokens, Dio? dio})
-    : _tokens = tokens,
-      _dio =
-          dio ??
-          Dio(
-            BaseOptions(
-              baseUrl: baseUrl,
-              connectTimeout: const Duration(seconds: 10),
-              receiveTimeout: const Duration(seconds: 20),
-              headers: {'Accept': 'application/json'},
-            ),
-          );
+  ApiClient({
+    required String baseUrl,
+    required TokenStorage tokens,
+    this.onUnauthorized,
+    Dio? dio,
+  }) : _tokens = tokens,
+       _dio =
+           dio ??
+           Dio(
+             BaseOptions(
+               baseUrl: baseUrl,
+               connectTimeout: const Duration(seconds: 10),
+               receiveTimeout: const Duration(seconds: 20),
+               headers: {'Accept': 'application/json'},
+             ),
+           );
 
   final Dio _dio;
   final TokenStorage _tokens;
+
+  // Dipanggil saat backend menjawab 401, setelah token dibuang.
+  final void Function()? onUnauthorized;
 
   Future<T> get<T>(
     String path, {
@@ -57,10 +64,12 @@ class ApiClient {
       );
       return parse(response.data);
     } on DioException catch (error) {
-      // Backend menolak token yang kita kirim (misalnya kunci JWT berubah):
-      // buang token supaya aplikasi menganggap pengguna sudah keluar.
-      if (token != null && error.response?.statusCode == 401) {
+      // 401: token ditolak atau sudah kedaluwarsa. Buang token, lalu beri tahu
+      // aplikasi supaya pengguna diarahkan ke Sign in. (Login dengan password
+      // salah juga 401, tapi saat itu belum ada yang login, jadi tidak ada efek.)
+      if (error.response?.statusCode == 401) {
         await _tokens.clear();
+        onUnauthorized?.call();
       }
       throw _toApiException(error);
     }

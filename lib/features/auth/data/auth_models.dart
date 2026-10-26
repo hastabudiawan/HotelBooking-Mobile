@@ -26,6 +26,9 @@ class AuthResponse {
     email: json['email'] as String,
     roles: (json['roles'] as List).map((e) => e.toString()).toList(),
   );
+
+  UserProfile toProfile() =>
+      UserProfile(id: userId, fullName: fullName, email: email, roles: roles);
 }
 
 // Balasan GET /api/auth/me
