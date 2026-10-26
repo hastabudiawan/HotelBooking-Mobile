@@ -6,6 +6,7 @@ import '../../features/account/account_page.dart';
 import '../../features/auth/application/auth_controller.dart';
 import '../../features/auth/presentation/login_page.dart';
 import '../../features/auth/presentation/register_page.dart';
+import '../../features/bookings/presentation/book_room_page.dart';
 import '../../features/home/home_page.dart';
 import '../../features/rooms/presentation/room_detail_page.dart';
 import '../../features/rooms/presentation/rooms_page.dart';
@@ -45,10 +46,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             RoomDetailPage(slug: state.pathParameters['slug']!),
       ),
-      // Sementara: diganti halaman booking sungguhan di Part 05.
       GoRoute(
         path: '/book/:slug',
-        builder: (context, state) => const PlaceholderPage(title: 'Book room'),
+        builder: (context, state) =>
+            BookRoomPage(slug: state.pathParameters['slug']!),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
@@ -68,6 +69,15 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: '/bookings',
                 builder: (context, state) =>
                     const PlaceholderPage(title: 'Booking'),
+                routes: [
+                  // Sementara: diganti detail booking sungguhan di Part 06.
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) => PlaceholderPage(
+                      title: 'Booking #${state.pathParameters['id']} created',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
