@@ -6,7 +6,9 @@ import '../../features/account/account_page.dart';
 import '../../features/auth/application/auth_controller.dart';
 import '../../features/auth/presentation/login_page.dart';
 import '../../features/auth/presentation/register_page.dart';
-import '../../features/home/api_check_page.dart';
+import '../../features/home/home_page.dart';
+import '../../features/rooms/presentation/room_detail_page.dart';
+import '../../features/rooms/presentation/rooms_page.dart';
 import '../../features/splash/splash_page.dart';
 import '../widgets/app_shell.dart';
 import '../widgets/placeholder_page.dart';
@@ -37,6 +39,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             RegisterPage(next: state.uri.queryParameters['next']),
       ),
+      // Layar penuh di atas tab (tanpa navigasi bawah).
+      GoRoute(
+        path: '/rooms/:slug',
+        builder: (context, state) =>
+            RoomDetailPage(slug: state.pathParameters['slug']!),
+      ),
+      // Sementara: diganti halaman booking sungguhan di Part 05.
+      GoRoute(
+        path: '/book/:slug',
+        builder: (context, state) => const PlaceholderPage(title: 'Book room'),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),
@@ -45,7 +58,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/home',
-                builder: (context, state) => const ApiCheckPage(),
+                builder: (context, state) => const HomePage(),
               ),
             ],
           ),
@@ -62,8 +75,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/rooms',
-                builder: (context, state) =>
-                    const PlaceholderPage(title: 'Rooms'),
+                builder: (context, state) => const RoomsPage(),
               ),
             ],
           ),

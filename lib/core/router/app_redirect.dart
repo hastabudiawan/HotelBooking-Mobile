@@ -16,7 +16,7 @@ String safeNext(String? next) {
 
 // Halaman yang butuh login: tab Booking dan Account beserta turunannya.
 bool requiresLogin(String path) {
-  const protectedRoots = ['/bookings', '/account'];
+  const protectedRoots = ['/bookings', '/account', '/book'];
   return protectedRoots.any(
     (root) => path == root || path.startsWith('$root/'),
   );
