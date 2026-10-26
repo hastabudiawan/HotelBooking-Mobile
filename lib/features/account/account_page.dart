@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/widgets/confirm_dialog.dart';
 import '../auth/application/auth_controller.dart';
 
 class AccountPage extends ConsumerWidget {
@@ -12,54 +13,14 @@ class AccountPage extends ConsumerWidget {
     // Diambil sebelum dialog, karena widget ini bisa sudah tidak aktif sesudahnya.
     final controller = ref.read(authControllerProvider.notifier);
 
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Are you sure ?',
-                style: Theme.of(dialogContext).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: FilledButton(
-                      onPressed: () => Navigator.of(dialogContext).pop(true),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.danger,
-                        minimumSize: const Size.fromHeight(44),
-                        shape: const StadiumBorder(),
-                      ),
-                      child: const Text('Logout'),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: FilledButton(
-                      onPressed: () => Navigator.of(dialogContext).pop(false),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.success,
-                        minimumSize: const Size.fromHeight(44),
-                        shape: const StadiumBorder(),
-                      ),
-                      child: const Text('Cancel'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+    final confirmed = await showPillConfirmDialog(
+      context,
+      message: 'Are you sure ?',
+      confirmLabel: 'Logout',
+      cancelLabel: 'Cancel',
     );
 
-    if (confirmed != true || !context.mounted) return;
+    if (!confirmed || !context.mounted) return;
 
     // Pindah ke Home dulu supaya tidak diarahkan ke Sign in dengan ?next=/account.
     context.go('/home');

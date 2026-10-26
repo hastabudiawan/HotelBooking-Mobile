@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,11 +7,13 @@ import '../../features/auth/application/auth_controller.dart';
 import '../../features/auth/presentation/login_page.dart';
 import '../../features/auth/presentation/register_page.dart';
 import '../../features/bookings/presentation/book_room_page.dart';
+import '../../features/bookings/presentation/booking_detail_page.dart';
 import '../../features/home/home_page.dart';
 import '../../features/rooms/presentation/room_detail_page.dart';
 import '../../features/rooms/presentation/rooms_page.dart';
 import '../../features/splash/splash_page.dart';
 import '../widgets/app_shell.dart';
+import '../widgets/back_scaffold.dart';
 import '../widgets/placeholder_page.dart';
 import 'app_redirect.dart';
 
@@ -70,12 +72,19 @@ final routerProvider = Provider<GoRouter>((ref) {
                 builder: (context, state) =>
                     const PlaceholderPage(title: 'Booking'),
                 routes: [
-                  // Sementara: diganti detail booking sungguhan di Part 06.
                   GoRoute(
                     path: ':id',
-                    builder: (context, state) => PlaceholderPage(
-                      title: 'Booking #${state.pathParameters['id']} created',
-                    ),
+                    builder: (context, state) {
+                      final id = int.tryParse(state.pathParameters['id']!);
+                      if (id == null || id <= 0) {
+                        return const BackScaffold(
+                          title: 'Booking details',
+                          fallbackLocation: '/bookings',
+                          child: Center(child: Text('Booking not found.')),
+                        );
+                      }
+                      return BookingDetailPage(id: id);
+                    },
                   ),
                 ],
               ),
