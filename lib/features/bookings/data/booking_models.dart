@@ -39,14 +39,16 @@ enum PaymentStatus {
   };
 }
 
-// Nilai apiValue persis seperti yang diterima backend.
+// apiValue persis seperti yang diterima backend. label untuk tampilan.
 enum PaymentMethod {
-  transfer('Transfer'),
-  qris('QRIS'),
-  card('Kartu');
+  transfer('Transfer', 'Bank transfer'),
+  qris('QRIS', 'QRIS'),
+  card('Kartu', 'Credit or debit card');
 
-  const PaymentMethod(this.apiValue);
+  const PaymentMethod(this.apiValue, this.label);
+
   final String apiValue;
+  final String label;
 }
 
 class Booking {
