@@ -9,8 +9,11 @@ import 'core/storage/token_storage.dart';
 import 'features/auth/application/auth_controller.dart';
 import 'features/auth/data/jwt.dart';
 
+import 'package:flutter/services.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   final prefs = await SharedPreferences.getInstance();
 
   // Status login dibaca sebelum aplikasi tampil, supaya router langsung tahu.
