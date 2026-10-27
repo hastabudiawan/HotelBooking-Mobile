@@ -26,3 +26,21 @@ String formatDateTimeWib(DateTime utc) {
   final wib = utc.toUtc().add(const Duration(hours: 7));
   return '${DateFormat('d MMM yyyy, HH:mm').format(wib)} WIB';
 }
+
+final _dayMonth = DateFormat('d MMM');
+
+// "27 Mar to 29 Mar". Tahun hanya ditampilkan kalau bukan tahun berjalan.
+String formatDateRange(
+  DateTime checkIn,
+  DateTime checkOut, {
+  required int currentYear,
+}) {
+  final needsYear = checkIn.year != currentYear || checkOut.year != currentYear;
+  if (!needsYear) {
+    return '${_dayMonth.format(checkIn)} to ${_dayMonth.format(checkOut)}';
+  }
+  final start = checkIn.year == checkOut.year
+      ? _dayMonth.format(checkIn)
+      : formatDateShort(checkIn);
+  return '$start to ${formatDateShort(checkOut)}';
+}

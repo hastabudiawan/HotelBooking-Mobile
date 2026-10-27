@@ -38,6 +38,8 @@ class _BookingDetailPageState extends ConsumerState<BookingDetailPage> {
   void _refresh() {
     ref.invalidate(bookingProvider(widget.id));
     ref.invalidate(paymentsProvider(widget.id));
+    // Daftar di tab Booking ikut diperbarui (status baru setelah bayar atau batal).
+    ref.invalidate(myBookingsProvider);
   }
 
   Future<void> _pay(PaymentMethod method, bool simulateFailure) async {
@@ -174,7 +176,9 @@ class _BookingDetailPageState extends ConsumerState<BookingDetailPage> {
                   ],
                 ),
               ),
-              StatusBadge(status: booking.status),
+              StatusBadge(
+                status: effectiveStatus(booking, DateTime.now().toUtc()),
+              ),
             ],
           ),
           const SizedBox(height: 20),

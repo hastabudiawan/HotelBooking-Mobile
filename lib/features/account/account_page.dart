@@ -70,7 +70,21 @@ class AccountPage extends ConsumerWidget {
                 color: dark ? Colors.white60 : AppColors.muted,
               ),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 32),
+            _MenuTile(
+              icon: Icons.tune,
+              title: 'Preference',
+              subtitle: 'Set dark mode',
+              onTap: () => context.push('/account/preference'),
+            ),
+            const SizedBox(height: 12),
+            _MenuTile(
+              icon: Icons.event_note_outlined,
+              title: 'Bookings',
+              subtitle: 'Manage all your bookings',
+              onTap: () => context.go('/bookings'),
+            ),
+            const SizedBox(height: 40),
             Center(
               child: TextButton(
                 onPressed: () => _confirmLogout(context, ref),
@@ -85,6 +99,74 @@ class AccountPage extends ConsumerWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// Baris menu bergaya desain: ikon cokelat, judul, keterangan kecil, dan panah.
+class _MenuTile extends StatelessWidget {
+  const _MenuTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final dark = theme.brightness == Brightness.dark;
+
+    return Material(
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide(color: dark ? Colors.white24 : AppColors.line),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(6),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Row(
+            children: [
+              Icon(icon, color: dark ? Colors.white : AppColors.brand),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: dark ? Colors.white : AppColors.brand,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: dark ? Colors.white60 : AppColors.muted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: dark ? Colors.white60 : AppColors.muted,
+              ),
+            ],
+          ),
         ),
       ),
     );

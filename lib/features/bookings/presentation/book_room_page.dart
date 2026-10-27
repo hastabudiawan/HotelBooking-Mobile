@@ -16,6 +16,7 @@ import '../application/availability.dart';
 import '../data/bookings_repository.dart';
 import '../domain/stay_rules.dart';
 import 'widgets/booking_form_widgets.dart';
+import '../application/booking_providers.dart';
 
 class BookRoomPage extends ConsumerWidget {
   const BookRoomPage({super.key, required this.slug});
@@ -151,6 +152,7 @@ class _BookingFormState extends ConsumerState<_BookingForm> {
             checkOut: query.checkOut,
             guestCount: query.guests,
           );
+      ref.invalidate(myBookingsProvider);
       if (!mounted) return;
       context.go('/bookings/${booking.id}');
     } on ApiException catch (error) {

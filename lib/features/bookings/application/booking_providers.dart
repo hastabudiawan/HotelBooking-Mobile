@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_exception.dart';
+import '../../auth/application/auth_controller.dart';
 import '../data/booking_models.dart';
 import '../data/bookings_repository.dart';
 
@@ -21,3 +22,10 @@ final bookingProvider = FutureProvider.autoDispose.family<Booking?, int>((
 final paymentsProvider = FutureProvider.autoDispose.family<List<Payment>, int>(
   (ref, id) => ref.watch(bookingsRepositoryProvider).payments(id),
 );
+
+// Semua booking milik pengguna yang sedang login.
+final myBookingsProvider = FutureProvider.autoDispose<List<Booking>>((ref) {
+  final userId = ref.watch(authControllerProvider.select((user) => user?.id));
+  if (userId == null) return Future.value(const <Booking>[]);
+  return ref.watch(bookingsRepositoryProvider).mine();
+});
