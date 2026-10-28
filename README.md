@@ -2,8 +2,6 @@
 
 ## Fitur
 
-Aplikasi ini untuk **tamu**. Panel resepsionis dan admin ada di versi web.
-
 - [x] Beranda dan daftar kamar dengan filter kategori dan pencarian
 - [x] Detail kamar dan pengecekan ketersediaan berdasarkan tanggal dan jumlah tamu
 - [x] Daftar dan masuk (JWT disimpan di Keychain iOS / Keystore Android)
